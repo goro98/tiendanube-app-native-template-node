@@ -1,0 +1,31 @@
+services:
+  - type: web
+    name: tiendanube-api
+    runtime: node
+    rootDir: .
+    buildCommand: yarn install && cd api && yarn install
+    startCommand: cd api && yarn start:prod
+    envVars:
+      - key: TIENDANUBE_AUTENTICATION_URL
+        value: https://www.tiendanube.com/apps/authorize/token
+      - key: TIENDANUBE_API_URL
+        value: https://api.tiendanube.com/v1
+      - key: CLIENT_SECRET
+        sync: false
+      - key: CLIENT_ID
+        sync: false
+      - key: CLIENT_EMAIL
+        sync: false
+      - key: SECRET_KEY
+        sync: false
+
+  - type: static_site
+    name: tiendanube-frontend
+    rootDir: .
+    buildCommand: cd frontend && yarn install && yarn build
+    staticPublishPath: frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        value: https://tiendanube-api.onrender.com
+      - key: VITE_CLIENT_ID
+        sync: false
